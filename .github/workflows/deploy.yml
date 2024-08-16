@@ -1,0 +1,32 @@
+name: Deploy to WP Engine
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    name: Deploy to WP Engine
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up SSH
+      uses: webfactory/ssh-agent@v0.9.1
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Sync files to WP Engine
+      run: |
+        rsync -avz --delete \
+        -e "ssh -o StrictHostKeyChecking=no" \
+        --exclude=".git/" \
+        ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.PATH }}
+
+    - name: Clear WP Engine cache
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.USERNAME }}@${{ secrets.HOST }} "cd ${{ secrets.PATH }} && wp cache flush"
+
