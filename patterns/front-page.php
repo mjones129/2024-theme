@@ -14,7 +14,7 @@
 <div style="height:324px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:heading {"textAlign":"center","level":1} -->
+<!-- wp:heading {"customTextColor":"#e9e9e9" "textAlign":"center","level":1} -->
 <h1 class="wp-block-heading has-text-align-center">Let's Get It</h1>
 <!-- /wp:heading -->
 
