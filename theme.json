@@ -43,7 +43,8 @@
 	},
 	"styles": {
 		"color": {
-			"text": "#e9e9e9"
+			"text": "#e9e9e9",
+      "h1": "#e9e9e9"
 		},
 		"elements": {
 			"link": {
