@@ -14,26 +14,8 @@
 <div style="height:324px" aria-hidden="true" class="wp-block-spacer"></div>
 <!-- /wp:spacer -->
 
-<!-- wp:gallery {"columns":2,"linkTo":"none"} -->
-<figure class="wp-block-gallery has-nested-images columns-2 is-cropped"><!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-<figure class="wp-block-image size-large"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/themegen2-1024x768.png" alt="Themegen logo" class=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-<figure class="wp-block-image size-large"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/ami_home.webp" alt="" class=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-<figure class="wp-block-image size-large"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/bp1-1024x582.png" alt="" class=""/></figure>
-<!-- /wp:image -->
-
-<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} -->
-<figure class="wp-block-image size-large"><img src="<?php echo esc_url( get_stylesheet_directory_uri() ); ?>/assets/images/Homepage-1024x516.png" alt="" class=""/></figure>
-<!-- /wp:image --></figure>
-<!-- /wp:gallery -->
-
 <!-- wp:heading {"textAlign":"center","level":1} -->
-<h1 class="wp-block-heading has-text-align-center"></h1>
+<h1 class="wp-block-heading has-text-align-center">Let's Get It</h1>
 <!-- /wp:heading -->
 
 <!-- wp:spacer {"height":"443px"} -->
