@@ -12,7 +12,10 @@ jobs:
 
     steps:
     - name: Webpack Build
-      run: npm run webpack
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+    - run: npm run webpack
     
     - name: Checkout code
       uses: actions/checkout@v4
