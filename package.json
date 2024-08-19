@@ -6,7 +6,7 @@
     "three": "^0.167.1"
   },
   "scripts": {
-    "webpack": "webpack --config ./webpack.config.js"
+    "webpack": "webpack"
   },
   "devDependencies": {
     "webpack": "^5.93.0",
