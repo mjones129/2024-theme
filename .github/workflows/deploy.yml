@@ -14,11 +14,18 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Webpack Build
+    - name: Setup Node 
       uses: actions/setup-node@v4
       with:
         node-version: 20
+
+    - name: Install deps
     - run: npm ci
+
+    - name: list modules
+      run: ls -R node_modules
+
+    - name: build theme
     - run: npm run webpack
 
     - name: Set up SSH
