@@ -22,9 +22,6 @@ jobs:
     - name: Install deps
       run: npm ci
 
-    - name: List node_modules
-      run: ls -R node_modules
-
     - name: Build theme
       run: npm run webpack
 
