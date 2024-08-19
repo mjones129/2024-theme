@@ -20,13 +20,13 @@ jobs:
         node-version: 20
 
     - name: Install deps
-    - run: npm ci
+      run: npm ci
 
-    - name: list modules
-    - run: ls -R node_modules
+    - name: List node_modules
+      run: ls -R node_modules
 
-    - name: build theme
-    - run: npm run webpack
+    - name: Build theme
+      run: npm run webpack
 
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.9.0
