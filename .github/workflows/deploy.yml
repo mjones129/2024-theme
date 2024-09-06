@@ -34,7 +34,7 @@ jobs:
       run: |
         rsync -avz --delete \
         -e "ssh -o StrictHostKeyChecking=no" \
-        --exclude=".git/" \
+        --exclude={".git/","node_modules"} \
         ./ ${{ secrets.USERNAME }}@${{ secrets.HOST }}:${{ secrets.REMOTE_PATH }}
 
     - name: Clear WP Engine cache
