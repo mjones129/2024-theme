@@ -37,14 +37,19 @@ const material = new THREE.MeshStandardMaterial({
   color: parameters.materialColor,
 });
 
+let mjlogo;
+
 //models
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
   "/wp-content/themes/2024-theme/assets/models/mjt-logo.glb",
   (gltf) => {
-    scene.add(gltf.scene);
+    mjlogo = gltf.scene;
+    scene.add(mjlogo);
   },
 );
+
+console.log(mjlogo);
 
 /**
  * Particles
@@ -182,6 +187,9 @@ const tick = () => {
     (parallaxY - cameraGroup.position.y) * 1.2 * deltaTime;
 
   //animate meshes
+  if (mjlogo) {
+    mjlogo.rotation.y = cursor.x;
+  }
 
   // Render
   renderer.render(scene, camera);

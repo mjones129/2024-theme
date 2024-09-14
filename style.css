@@ -15,7 +15,7 @@ Tags:
 */
 
 html {
-  background: "#235";
+  overflow-x: hidden;
 }
 
 body {
