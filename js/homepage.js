@@ -20,6 +20,9 @@ const scene = new THREE.Scene();
 
 //texture
 const textureLoader = new THREE.TextureLoader();
+const matcap = textureLoader.load(
+  "/wp-content/themes/2024-theme/assets/images/matcap2.png",
+);
 
 //material
 
@@ -28,9 +31,14 @@ let mjlogo;
 //models
 const gltfLoader = new GLTFLoader();
 gltfLoader.load(
-  "/wp-content/themes/2024-theme/assets/models/mjt-logo.glb",
+  "/wp-content/themes/2024-theme/assets/models/mjmatcap.gltf",
   (gltf) => {
     mjlogo = gltf.scene;
+    console.log(mjlogo);
+    mjlogo.traverse((o) => {
+      if (o.isMesh) o.material = new THREE.MeshMatcapMaterial({ matcap });
+    });
+    mjlogo.position.y = 1;
     scene.add(mjlogo);
   },
 );
@@ -55,7 +63,7 @@ const planeMaterial = new THREE.ShaderMaterial({
         varying float vPositionZ;
 
         void main() {
-            vec4 modelPosition = modelMatrix * vec4(position, 0.25);
+            vec4 modelPosition = modelMatrix * vec4(position, 0.5);
             modelPosition.y = sin(modelPosition.x - uTime) * sin(modelPosition.z * 0.6 + uTime) * uElevation;
 
             vec4 viewPosition = viewMatrix * modelPosition;
@@ -100,8 +108,11 @@ scene.add(plane);
 /**
  * Lights
  */
-const directionalLight = new THREE.DirectionalLight("#fff", 3);
-directionalLight.position.set(1, 1, 0);
+const ambientLight = new THREE.AmbientLight("#fff", 4.5);
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight("#fff", 7);
+directionalLight.position.set(5, 4, 2);
 directionalLight.lookAt(0, 0, 0);
 scene.add(directionalLight);
 
@@ -151,6 +162,7 @@ cameraGroup.add(camera);
  */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
+  antialias: true,
   alpha: true,
 });
 renderer.setSize(sizes.width, sizes.height);
@@ -193,7 +205,7 @@ const tick = () => {
 
   //animate camera
 
-  camera.position.y = -scrollY / sizes.height;
+  camera.position.y = -scrollY / sizes.height + 1;
   const parallaxX = cursor.x;
   const parallaxY = -cursor.y * 0.5;
 
