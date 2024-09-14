@@ -1,20 +1,9 @@
 import * as THREE from "three";
-import GUI from "lil-gui";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 /**
  * Debug
  */
-const gui = new GUI();
-
-const parameters = {
-  materialColor: "#898dad",
-};
-
-gui.addColor(parameters, "materialColor").onChange(() => {
-  material.color.set(parameters.materialColor);
-  particlesMaterial.color.set(parameters.materialColor);
-});
 
 /**
  * Base
@@ -33,9 +22,6 @@ const scene = new THREE.Scene();
 const textureLoader = new THREE.TextureLoader();
 
 //material
-const material = new THREE.MeshStandardMaterial({
-  color: parameters.materialColor,
-});
 
 let mjlogo;
 
@@ -49,38 +35,67 @@ gltfLoader.load(
   },
 );
 
-console.log(mjlogo);
-
 /**
  * Particles
  */
 //Geometry
-const particlesCount = 200;
-const positions = new Float32Array(particlesCount * 3);
+const planeGeometry = new THREE.PlaneGeometry(20, 20, 150, 150);
+const planeMaterial = new THREE.ShaderMaterial({
+  uniforms: {
+    uTime: { value: 0 },
+    uElevation: { value: 0.282 },
+  },
+  vertexShader: `
+        uniform float uTime;
+        uniform float uElevation;
 
-for (let i = 0; i < particlesCount; i++) {
-  positions[i * 3 + 0] = (Math.random() - 0.5) * 10;
-  positions[i * 3 + 1] = (Math.random() - 0.5) * 10;
-  positions[i * 3 + 2] = (Math.random() - 0.5) * 10;
-}
+        attribute float aSize;
 
-const particlesGeometry = new THREE.BufferGeometry();
-particlesGeometry.setAttribute(
-  "position",
-  new THREE.BufferAttribute(positions, 3),
-);
+        varying float vPositionY;
+        varying float vPositionZ;
 
-//material
+        void main() {
+            vec4 modelPosition = modelMatrix * vec4(position, 0.25);
+            modelPosition.y = sin(modelPosition.x - uTime) * sin(modelPosition.z * 0.6 + uTime) * uElevation;
 
-const particlesMaterial = new THREE.PointsMaterial({
-  color: parameters.materialColor,
-  sizeAttenuation: true,
-  size: 0.03,
+            vec4 viewPosition = viewMatrix * modelPosition;
+            gl_Position = projectionMatrix * viewPosition;
+
+            gl_PointSize = 2.0 * aSize;
+            gl_PointSize *= ( 1.0 / - viewPosition.z );
+
+            vPositionY = modelPosition.y;
+            vPositionZ = modelPosition.z;
+        }
+    `,
+  fragmentShader: `
+        varying float vPositionY;
+        varying float vPositionZ;
+
+        void main() {
+            float strength = (vPositionY + 0.25) * 0.3;
+            gl_FragColor = vec4(1.0, 1.0, 1.0, strength);
+        }
+    `,
+  transparent: true,
 });
 
-//points
-const particles = new THREE.Points(particlesGeometry, particlesMaterial);
-scene.add(particles);
+const planeSizesArray = new Float32Array(
+  planeGeometry.attributes.position.count,
+);
+for (let i = 0; i < planeSizesArray.length; i++) {
+  planeSizesArray[i] = Math.random() * 4.0;
+}
+planeGeometry.setAttribute(
+  "aSize",
+  new THREE.BufferAttribute(planeSizesArray, 1),
+);
+
+const plane = new THREE.Points(planeGeometry, planeMaterial);
+plane.rotation.x = -Math.PI * 0.4;
+scene.add(plane);
+
+//material
 
 /**
  * Lights
@@ -128,6 +143,7 @@ const camera = new THREE.PerspectiveCamera(
   100,
 );
 camera.position.z = 6;
+camera.position.y = 1;
 cameraGroup.add(camera);
 
 /**
@@ -135,7 +151,7 @@ cameraGroup.add(camera);
  */
 const renderer = new THREE.WebGLRenderer({
   canvas: canvas,
-  alpha: false,
+  alpha: true,
 });
 renderer.setSize(sizes.width, sizes.height);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -179,7 +195,7 @@ const tick = () => {
 
   camera.position.y = -scrollY / sizes.height;
   const parallaxX = cursor.x;
-  const parallaxY = -cursor.y;
+  const parallaxY = -cursor.y * 0.5;
 
   cameraGroup.position.x +=
     (parallaxX - cameraGroup.position.x) * 1.2 * deltaTime;
@@ -190,6 +206,8 @@ const tick = () => {
   if (mjlogo) {
     mjlogo.rotation.y = cursor.x;
   }
+
+  planeMaterial.uniforms.uTime.value = elapsedTime;
 
   // Render
   renderer.render(scene, camera);
