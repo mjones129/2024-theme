@@ -56,3 +56,7 @@ section.hero {
 section.hero h1 {
   font-size: 3rem;
 }
+
+div.editor-styles-wrapper {
+  background-color: #151818;
+}
