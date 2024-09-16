@@ -34,7 +34,6 @@ gltfLoader.load(
   "/wp-content/themes/2024-theme/assets/models/mjmatcap.gltf",
   (gltf) => {
     mjlogo = gltf.scene;
-    console.log(mjlogo);
     mjlogo.traverse((o) => {
       if (o.isMesh) o.material = new THREE.MeshMatcapMaterial({ matcap });
     });
