@@ -29,3 +29,17 @@ function add_scripts()
 }
 
 add_action('wp_enqueue_scripts', 'add_scripts');
+
+/**
+ * Enqueue content assets but only in the Editor.
+ */
+function editor_styles()
+{
+  if (is_admin()) {
+    wp_enqueue_style(
+      'editor-styles',
+      get_template_directory_uri() . '/editor.css'
+    );
+  }
+}
+add_action('enqueue_block_assets', 'editor_styles');
