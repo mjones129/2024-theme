@@ -24,7 +24,7 @@ function add_scripts()
 {
   wp_enqueue_style('style', get_template_directory_uri() . '/style.css', array(), false, 'all');
   if (is_page('10')) { //homepage
-    wp_enqueue_script('three', get_template_directory_uri() . '/dist/main.js', array(), null, true);
+    wp_enqueue_script('three', get_template_directory_uri() . '/dist/main.js', array(), '1.0.1', true);
   }
 }
 
